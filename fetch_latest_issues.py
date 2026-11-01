@@ -759,8 +759,11 @@ def main(argv=None) -> int:
                        [base.with_suffix(".html"), base.with_suffix(".csv")])
             print(f"已寄出到 {cfg.get('to') or cfg['username']}")
         except Exception as e:  # noqa: BLE001
-            print(f"寄信失敗：{type(e).__name__}: {e}", file=sys.stderr)
-            return 3
+            hint = ("（Gmail 不接受帳號／應用程式密碼：GMAIL_USER 必須是產生該應用程式密碼的那個 Gmail 帳號）"
+                    if "535" in str(e) or "Disconnected" in type(e).__name__ else "")
+            # 寄信失敗不影響資料與網頁更新；在 GitHub Actions 頁面顯示錯誤註記
+            print(f"::error::寄信失敗：{type(e).__name__}: {e}{hint}")
+            print(f"寄信失敗：{type(e).__name__}: {e}{hint}", file=sys.stderr)
     return 0
 
 
