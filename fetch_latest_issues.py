@@ -568,7 +568,7 @@ def write_site(results: list[dict], site: Path, site_url: str, generated: str, t
 
 # ---------------------------------------------------------------- Email
 
-def build_email_html(results: list[dict], generated: str, first_run: bool) -> str:
+def build_email_html(results: list[dict], generated: str, first_run: bool, site_url: str = "") -> str:
     """寄信用的 HTML：全部 inline style（Gmail 會移除 <style> 與 <details>）。"""
     ok = [r for r in results if r.get("latest")]
     new = [r for r in ok if r.get("is_new")]
@@ -609,7 +609,8 @@ def build_email_html(results: list[dict], generated: str, first_run: bool) -> st
             f'<h2 style="font:600 22px Georgia,serif;margin:0 0 6px">{esc(TITLE)} · 最新一期</h2>'
             f'<p style="color:#6b665e;margin:0 0 8px">{esc(generated)} · {esc(intro)}</p>'
             f'{"".join(toc(r) for r in full)}{rest}{errs}'
-            f'<p style="color:#6b665e;font-size:12px;margin-top:28px">完整報告與 CSV 見附件。資料來源 Crossref。</p></div>')
+            + (f'<p style="margin-top:24px">網頁版（所有期刊最新一期與文章連結）：<a href="{esc(site_url)}" style="color:#1d4f91">{esc(site_url)}</a></p>' if site_url else "")
+            + f'<p style="color:#6b665e;font-size:12px;margin-top:28px">完整報告與 CSV 見附件。資料來源 Crossref。</p></div>')
 
 
 def send_email(cfg: dict, subject: str, html_body: str, attachments: list[Path]) -> None:
@@ -755,7 +756,7 @@ def main(argv=None) -> int:
         subject = (f"[{TITLE}] {today} 第一次執行：{n_ok} 本期刊最新一期" if first_run
                    else f"[{TITLE}] {today}：{n_new} 本期刊有新一期")
         try:
-            send_email(cfg, subject, build_email_html(results, generated, first_run),
+            send_email(cfg, subject, build_email_html(results, generated, first_run, a.site_url or ""),
                        [base.with_suffix(".html"), base.with_suffix(".csv")])
             print(f"已寄出到 {cfg.get('to') or cfg['username']}")
         except Exception as e:  # noqa: BLE001
