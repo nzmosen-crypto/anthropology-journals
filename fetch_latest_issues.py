@@ -701,6 +701,7 @@ def main(argv=None) -> int:
     cr = Crossref(a.mailto)
     results = []
     print(f"抓取 {len(journals)} 本期刊…")
+    had_state = bool(state)  # 已執行過：之後新加入的期刊，第一次出現就算 NEW（會進 RSS）
     with ThreadPoolExecutor(max_workers=max(1, a.workers)) as ex:
         futs = {ex.submit(fetch_journal, cr, j): j for j in journals}
         for i, fut in enumerate(as_completed(futs), 1):
@@ -709,7 +710,7 @@ def main(argv=None) -> int:
             if lt:
                 sig = f"{lt['volume']}|{lt['issue']}"
                 prev = state.get(r["name"])
-                r["is_new"] = prev is not None and prev != sig
+                r["is_new"] = (prev != sig) if prev is not None else had_state
                 older = lt.pop("_older", [])
                 r["earlier_new"] = []
                 if r["is_new"]:
