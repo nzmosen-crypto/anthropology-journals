@@ -1,7 +1,7 @@
 # 文化人類學期刊 · 最新一期 / Cultural Anthropology Journals — Latest Issues
 
-每月自動抓取 26 本文化人類學期刊的最新一期目錄與摘要，發佈成公開網頁與 RSS。
-Every month this repository collects the latest-issue tables of contents (with abstracts) of 26 cultural anthropology journals and publishes them as a web page and an RSS feed.
+每月自動抓取 28 本文化人類學期刊的最新一期目錄與摘要，發佈成公開網頁與 RSS。
+Every month this repository collects the latest-issue tables of contents (with abstracts) of 28 cultural anthropology journals and publishes them as a web page and an RSS feed.
 
 ## 訂閱 / Subscribe
 
@@ -16,7 +16,7 @@ Selection: SJR Q1 in Anthropology where possible, otherwise highly prestigious i
 
 每本期刊的 SJR 分級與審查方式記在 `journals.csv` 的 `sjr_note`、`review` 欄（2026 年 11 月查核）。
 
-- 20 English · 3 日本語（CiNii Research）· 3 한국어（KCI 등재지；Crossref）
+- 22 English · 3 日本語（CiNii Research）· 3 한국어（KCI 등재지；Crossref）
 - 「Double-blind (verified)」＝出版社或期刊網站明文寫雙盲；其餘為同儕審查、但雙盲與否未能從官方頁面確認（*Current Anthropology*、*JRAI* 及日、韓期刊）。
 
 ## 資料來源 / Data sources
